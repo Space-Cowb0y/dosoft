@@ -300,12 +300,11 @@ class OrganizerApp:
             self.current_idx = new_idx
 
     def release_modifiers(self):
+        """Force Windows à relâcher les touches Ctrl, Alt et Shift après la saisie."""
         try:
             win32api.keybd_event(win32con.VK_MENU, 0, win32con.KEYEVENTF_KEYUP, 0)
             win32api.keybd_event(win32con.VK_CONTROL, 0, win32con.KEYEVENTF_KEYUP, 0)
             win32api.keybd_event(win32con.VK_SHIFT, 0, win32con.KEYEVENTF_KEYUP, 0)
-            win32api.mouse_event(0x0100, 0, 0, 0x0001, 0) # MB4
-            win32api.mouse_event(0x0100, 0, 0, 0x0002, 0) # MB5
         except: pass
 
     def restore_modifiers(self, mods):
@@ -450,7 +449,7 @@ class OrganizerApp:
             await asyncio.sleep(0.5) 
                 
 # --- SYSTÈME DE VÉRIFICATION DE VERSION ---
-CURRENT_VERSION = "1.1.0" 
+CURRENT_VERSION = "1.1.1" 
 VERSION_URL = "https://raw.githubusercontent.com/LuframeCode/Dosoft/main/version.json"
 
 def check_version():
@@ -493,7 +492,7 @@ def handle_multiple_instances():
         root.attributes("-topmost", True)
         rep = messagebox.askyesno("Instance détectée", "Une instance de DOSOFT est déjà en cours d'exécution !\n\nVoulez-vous fermer l'ancienne instance pour ouvrir celle-ci ?", parent=root)
         if rep:
-            hwnd = win32gui.FindWindow(None, "DOSOFT v1.1.0")
+            hwnd = win32gui.FindWindow(None, "DOSOFT v1.1.1")
             if hwnd:
                 _, pid = win32process.GetWindowThreadProcessId(hwnd)
                 try:
