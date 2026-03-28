@@ -1,6 +1,3 @@
-TELECHARGEZ ICI: https://www.dosoft.fr/download / https://github.com/luframecode/dosoft/releases/latest
-
-
 # README
 
 Ce dépôt contient le code source de l'outil disponible sur https://dosoft.fr.
@@ -13,15 +10,14 @@ Le code source présent ici permet de reconstruire l'application fournie sur le 
     ```
     git clone https://github.com/LuframeCode/dosoft
     ```
-2. Installer les dépendances:
-    ```
-    pip install -r requirements.txt
-    ```
-3. Ouvrir le projet et lancer le build via pyinstaller:
+2. Ouvrir le projet et lancer le build via pyinstaller:
     ```
     pyinstaller --onefile --windowed main.py
     ```
-4. Le binaire compilé (.exe) se trouvera typiquement dans `dist/main.exe` ou dans le dossier indiqué par le script de build.
+3. Le binaire compilé (.exe) se trouvera typiquement dans `dist/main.exe` ou dans le dossier indiqué par le script de build.
+
+## Construire l'installateur
+Vous pouvez tout build via "build.cmd" et inno setup en utilisant setup.iss pour créer un installateur .exe.
 
 ## Releases
 Les versions précompilées (fichiers .exe) sont disponibles dans la section "Releases" du dépôt. Téléchargez la release souhaitée si vous ne voulez pas compiler vous‑même.
