@@ -391,19 +391,20 @@ class OrganizerGUI:
         self.bind_tooltip(btn_x, "Effacer le raccourci")
 
     def catch_key(self, config_key, btn, allow_mouse=False):
-        if self.is_listening: return 
+        if self.is_listening: return
         self.is_listening = True
+        mods_now = []
+        if win32api.GetAsyncKeyState(win32con.VK_CONTROL) < 0: mods_now.append("ctrl")
+        if win32api.GetAsyncKeyState(win32con.VK_MENU) < 0: mods_now.append("alt")
+        if win32api.GetAsyncKeyState(win32con.VK_SHIFT) < 0: mods_now.append("shift")
         btn.configure(text="...", fg_color="#f39c12")
-        threading.Thread(target=self._listen_hotkey_thread, args=(config_key, btn, allow_mouse), daemon=True).start()
+        threading.Thread(target=self._listen_hotkey_thread, args=(config_key, btn, allow_mouse, mods_now), daemon=True).start()
 
-    def _listen_hotkey_thread(self, config_key, btn, allow_mouse):
+    def _listen_hotkey_thread(self, config_key, btn, allow_mouse, mods_before_click=None):
+        if mods_before_click is None: mods_before_click = []
         captured_key = None
         captured_mods = []
-        
-        while win32api.GetAsyncKeyState(win32con.VK_LBUTTON) < 0 or win32api.GetAsyncKeyState(win32con.VK_RBUTTON) < 0 or win32api.GetAsyncKeyState(win32con.VK_MBUTTON) < 0:
-            time.sleep(0.01)
-        time.sleep(0.1) 
-        
+
         def get_current_mods():
             mods = []
             if win32api.GetAsyncKeyState(win32con.VK_CONTROL) < 0: mods.append("ctrl")
@@ -411,39 +412,62 @@ class OrganizerGUI:
             if win32api.GetAsyncKeyState(win32con.VK_SHIFT) < 0: mods.append("shift")
             return mods
 
+        while win32api.GetAsyncKeyState(win32con.VK_LBUTTON) < 0 or win32api.GetAsyncKeyState(win32con.VK_RBUTTON) < 0 or win32api.GetAsyncKeyState(win32con.VK_MBUTTON) < 0:
+            time.sleep(0.01)
+        time.sleep(0.1)
+
         if not allow_mouse:
-            while True:
-                event = keyboard.read_event(suppress=True)
-                if event.event_type == keyboard.KEY_DOWN:
-                    if event.name not in ['alt', 'ctrl', 'shift', 'maj', 'right alt', 'right ctrl', 'left alt', 'left ctrl', 'menu', 'windows', 'cmd']:
-                        captured_mods = get_current_mods()
-                        if event.scan_code in SCAN_TO_AZERTY:
-                            captured_key = SCAN_TO_AZERTY[event.scan_code]
-                        else:
-                            captured_key = event.name
-                        break
-        else:
-            def on_key(e):
+            import threading as _threading
+            done_event = _threading.Event()
+            def on_key_hook(e):
                 nonlocal captured_key, captured_mods
                 if e.event_type == keyboard.KEY_DOWN:
-                    if e.name not in ['alt', 'ctrl', 'shift', 'maj', 'right alt', 'right ctrl', 'left alt', 'left ctrl', 'menu']:
-                        captured_mods = get_current_mods()
+                    if e.name not in ['alt', 'ctrl', 'shift', 'maj', 'right alt', 'right ctrl', 'left alt', 'left ctrl', 'menu', 'windows', 'cmd']:
+                        current_mods = get_current_mods()
+                        combined = list(set(mods_before_click + current_mods))
+                        captured_mods = [m for m in ['ctrl', 'alt', 'shift'] if m in combined]
+                        if e.scan_code in SCAN_TO_AZERTY:
+                            captured_key = SCAN_TO_AZERTY[e.scan_code]
+                        else:
+                            captured_key = e.name
+                        done_event.set()
+            hook = keyboard.hook(on_key_hook, suppress=True)
+            done_event.wait()
+            keyboard.unhook(hook)
+        else:
+            held_mods = set(mods_before_click)
+            MOD_NAMES = {'alt', 'ctrl', 'shift', 'maj', 'right alt', 'right ctrl', 'left alt', 'left ctrl', 'menu'}
+            MOD_MAP = {'alt': 'alt', 'left alt': 'alt', 'right alt': 'alt', 'menu': 'alt',
+                       'ctrl': 'ctrl', 'left ctrl': 'ctrl', 'right ctrl': 'ctrl',
+                       'shift': 'shift', 'maj': 'shift'}
+
+            def on_key(e):
+                nonlocal captured_key, captured_mods
+                if e.name in MOD_MAP:
+                    if e.event_type == keyboard.KEY_DOWN:
+                        held_mods.add(MOD_MAP[e.name])
+                    elif e.event_type == keyboard.KEY_UP:
+                        held_mods.discard(MOD_MAP[e.name])
+                    return
+                if e.event_type == keyboard.KEY_DOWN:
+                    if e.name not in MOD_NAMES:
+                        captured_mods = [m for m in ['ctrl', 'alt', 'shift'] if m in held_mods]
                         if e.scan_code in SCAN_TO_AZERTY: captured_key = SCAN_TO_AZERTY[e.scan_code]
                         else: captured_key = e.name
             hook = keyboard.hook(on_key, suppress=True)
-            
+
             while not captured_key:
                 if win32api.GetAsyncKeyState(win32con.VK_LBUTTON) < 0: captured_key = "left_click"
                 elif win32api.GetAsyncKeyState(win32con.VK_RBUTTON) < 0: captured_key = "right_click"
                 elif win32api.GetAsyncKeyState(win32con.VK_MBUTTON) < 0: captured_key = "middle_click"
                 elif win32api.GetAsyncKeyState(0x05) < 0: captured_key = "mouse4"
                 elif win32api.GetAsyncKeyState(0x06) < 0: captured_key = "mouse5"
-                
+
                 if captured_key:
-                    captured_mods = get_current_mods()
+                    captured_mods = [m for m in ['ctrl', 'alt', 'shift'] if m in held_mods]
                     break
                 time.sleep(0.01)
-                
+
             keyboard.unhook(hook)
 
         if captured_key == "esc":
