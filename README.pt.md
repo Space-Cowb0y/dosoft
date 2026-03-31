@@ -10,9 +10,9 @@ O código-fonte presente aqui permite reconstruir a aplicação distribuída no 
     ```
     git clone https://github.com/LuframeCode/dosoft
     ```
-2. Abra o projeto e execute o script de build recomendado:
+2. Abra o projeto e faça o build com PyInstaller:
     ```
-    build.cmd
+    pyinstaller --onefile --windowed main.py
     ```
 3. O binário compilado (`.exe`) normalmente fica em `dist/main.exe` ou na pasta definida pelo seu script de build.
 
