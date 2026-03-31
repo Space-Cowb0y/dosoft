@@ -478,7 +478,8 @@ class OrganizerApp:
 CURRENT_VERSION = "1.2.0" 
 VERSION_URL = "https://raw.githubusercontent.com/LuframeCode/Dosoft/main/version.json"
 
-def check_version():
+def check_version(i18n=None):
+    i18n = i18n or I18nManager("fr")
     try:
         response = requests.get(VERSION_URL, timeout=5)
         response.raise_for_status() 
@@ -486,15 +487,23 @@ def check_version():
         latest_version = data.get("version")
 
         if latest_version and latest_version != CURRENT_VERSION:
-            message = (
-                f"Une mise à jour est requise pour utiliser le logiciel.\n\n"
-                f"Votre version : {CURRENT_VERSION}\n"
-                f"Version disponible : {latest_version}\n\n"
-                f"Mise à jour dispo sur Dosoft.fr"
+            message = i18n.t(
+                "version_update_required_text",
+                "Une mise à jour est requise pour utiliser le logiciel.\n\nVotre version : {current_version}\nVersion disponible : {latest_version}\n\nMise à jour dispo sur Dosoft.fr"
+            ).format(current_version=CURRENT_VERSION, latest_version=latest_version)
+            ctypes.windll.user32.MessageBoxW(
+                0,
+                message,
+                i18n.t("version_update_required_title", "Mise à jour requise"),
+                0x10
             )
-            ctypes.windll.user32.MessageBoxW(0, message, "Mise à jour requise", 0x10)
     except requests.RequestException:
-        ctypes.windll.user32.MessageBoxW(0, "Impossible de vérifier la version.", "Erreur réseau", 0x10)
+        ctypes.windll.user32.MessageBoxW(
+            0,
+            i18n.t("version_network_error_text", "Impossible de vérifier la version."),
+            i18n.t("version_network_error_title", "Erreur réseau"),
+            0x10
+        )
         
 
 def is_admin():
@@ -539,7 +548,8 @@ def start_application():
         sys.exit() 
            
     _app_mutex = handle_multiple_instances()
-    check_version()
+    cfg = Config()
+    check_version(I18nManager(cfg.data.get("language", "fr")))
 
     app = OrganizerApp()
     app.gui.run()

@@ -1,5 +1,5 @@
 {
-  "app_title": "DOSOFT v1.2.0",
+  "app_title": "DOSOFT v1.1.1",
   "settings_title": "⚙️ Configurações",
   "settings_close": "Fechar",
   "settings_radial": "Roda de Foco (Radial)",
@@ -14,7 +14,7 @@
   "label_controls": "Controlar:",
   "label_versions": "Versões:",
   "label_keyboard_shortcuts": "Atalhos de Teclado",
-  "label_volume": "🔊 Volume da roda de foco:",
+  "label_volume": "🔊 Volume:",
   "btn_close_team": "Fechar Time",
   "btn_reset_settings": "Resetar Configs",
   "label_active_accounts": "Contas ativas",
@@ -67,5 +67,9 @@
   "popup_conflict_ignore": "Não mostrar este aviso novamente",
   "btn_close_organizer": "Fechar Organizer",
   "btn_keep_running": "Manter aberto",
-  "msg_organizer_closed": "✅ Organizer fechado com sucesso!"
+  "msg_organizer_closed": "✅ Organizer fechado com sucesso!",
+  "version_update_required_title": "Atualização obrigatória",
+  "version_update_required_text": "Uma atualização é necessária para usar este software.\n\nSua versão: {current_version}\nVersão disponível: {latest_version}\n\nAtualização disponível em Dosoft.fr",
+  "version_network_error_title": "Erro de rede",
+  "version_network_error_text": "Não foi possível verificar a versão."
 }

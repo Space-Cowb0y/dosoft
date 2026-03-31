@@ -1,5 +1,5 @@
 {
-  "app_title": "DOSOFT v1.2.0",
+  "app_title": "DOSOFT v1.1.1",
   "settings_title": "⚙️ Settings",
   "settings_close": "Close",
   "settings_radial": "Focus Wheel (Radial)",
@@ -14,7 +14,7 @@
   "label_controls": "Control:",
   "label_versions": "Versions:",
   "label_keyboard_shortcuts": "Keyboard Shortcuts",
-  "label_volume": "🔊 Focus Wheel Volume:",
+  "label_volume": "🔊 Volume:",
   "btn_close_team": "Close Team",
   "btn_reset_settings": "Reset Settings",
   "label_active_accounts": "Active accounts",
@@ -67,5 +67,9 @@
   "popup_conflict_ignore": "Do not show this warning again",
   "btn_close_organizer": "Close Organizer",
   "btn_keep_running": "Keep Open",
-  "msg_organizer_closed": "✅ Organizer closed successfully!"
+  "msg_organizer_closed": "✅ Organizer closed successfully!",
+  "version_update_required_title": "Update required",
+  "version_update_required_text": "An update is required to use this software.\n\nYour version: {current_version}\nAvailable version: {latest_version}\n\nUpdate available on Dosoft.fr",
+  "version_network_error_title": "Network error",
+  "version_network_error_text": "Unable to check version."
 }
