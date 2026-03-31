@@ -475,7 +475,7 @@ class OrganizerApp:
             await asyncio.sleep(0.5) 
                 
 # --- SYSTÈME DE VÉRIFICATION DE VERSION ---
-CURRENT_VERSION = "1.1.1" 
+CURRENT_VERSION = "1.2.0" 
 VERSION_URL = "https://raw.githubusercontent.com/LuframeCode/Dosoft/main/version.json"
 
 def check_version():
@@ -518,7 +518,7 @@ def handle_multiple_instances():
         root.attributes("-topmost", True)
         rep = messagebox.askyesno("Instance détectée", "Une instance de DOSOFT est déjà en cours d'exécution !\n\nVoulez-vous fermer l'ancienne instance pour ouvrir celle-ci ?", parent=root)
         if rep:
-            hwnd = win32gui.FindWindow(None, "DOSOFT v1.1.1")
+            hwnd = win32gui.FindWindow(None, "DOSOFT v1.2.0")
             if hwnd:
                 _, pid = win32process.GetWindowThreadProcessId(hwnd)
                 try:
