@@ -16,7 +16,6 @@ echo   Compilation PyInstaller - DOSOFT
 echo  ============================
 echo.
 
-:: --- Nettoyage ---
 if exist "%OUT_DIR%" (
     echo [*] Nettoyage du dossier dist...
     rmdir /s /q "%OUT_DIR%"

@@ -1,5 +1,5 @@
 {
-  "app_title": "DOSOFT v1.1.1",
+  "app_title": "DOSOFT v1.2.0",
   "settings_title": "⚙️ Paramètres",
   "settings_close": "Fermer",
   "settings_radial": "Roue de Focus (Radiale)",
@@ -14,7 +14,7 @@
   "label_controls": "Contrôler :",
   "label_versions": "Versions :",
   "label_keyboard_shortcuts": "Raccourcis Clavier",
-  "label_volume": "🔊 Volume Roulette :",
+  "label_volume": "🔊 Volume :",
   "btn_close_team": "Fermer Team",
   "btn_reset_settings": "Reset Settings",
   "label_active_accounts": "Comptes actifs",
@@ -67,5 +67,13 @@
   "popup_conflict_ignore": "Ne plus m'afficher cet avertissement",
   "btn_close_organizer": "Fermer Organizer",
   "btn_keep_running": "Conserver",
-  "msg_organizer_closed": "✅ Organizer fermé avec succès !"
+  "msg_organizer_closed": "✅ Organizer fermé avec succès !",
+  "version_update_required_title": "Mise à jour requise",
+  "version_update_required_text": "Une mise à jour est requise pour utiliser le logiciel.\n\nVotre version : {current_version}\nVersion disponible : {latest_version}\n\nMise à jour dispo sur Dosoft.fr",
+  "version_network_error_title": "Erreur réseau",
+  "version_network_error_text": "Impossible de vérifier la version.",
+  "header_instace_off": "Instance détectée",
+  "button_yes": "Oui",
+  "button_no": "Non",
+  "popup_conflict_instance_text": "Une instance de DOSOFT est déjà en cours d'exécution !\n\nVoulez-vous fermer l'ancienne instance pour ouvrir celle-ci ?"
 }
