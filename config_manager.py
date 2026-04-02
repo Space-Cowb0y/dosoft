@@ -14,6 +14,8 @@ class Config:
             "mode_team1_key": "",
             "mode_team2_key": "",
             "leaders_by_mode": {"Team 1": "", "Team 2": ""},
+            "refresh_key": "f5",
+            "quit_key": "f12",
             "leader_name": "",
             "accounts_state": {},
             "accounts_team": {},
@@ -37,7 +39,8 @@ class Config:
             "language": "fr",   
             "toolbar_x": 100,
             "toolbar_y": 100,
-            "floating_toolbar_visible": True       
+            "floating_toolbar_visible": True,       
+            "language": "fr",
         }
         self.load()
 
