@@ -16,6 +16,7 @@ from pystray import MenuItem as item
 import asyncio
 import requests
 from tkinter import messagebox 
+from app_version import CURRENT_VERSION, APP_TITLE
 
 # --- FORCAGE DU DPI AWARENESS (Règle les soucis 4K / Zoom Windows) ---
 try: ctypes.windll.shcore.SetProcessDpiAwareness(2)
@@ -513,7 +514,6 @@ class OrganizerApp:
                 await asyncio.sleep(5)
                 
 # --- SYSTÈME DE VÉRIFICATION DE VERSION ---
-CURRENT_VERSION = "1.2.0" 
 VERSION_URL = "https://raw.githubusercontent.com/LuframeCode/Dosoft/main/version.json"
 
 def check_version(i18n=None):
@@ -566,7 +566,7 @@ def handle_multiple_instances():
         root.attributes("-topmost", True)
         rep = messagebox.askyesno(i18n.t("header_instace_off", "Instance détectée"),i18n.t("popup_conflict_instance_text","Une instance de DOSOFT est déjà en cours d'exécution !\n\nVoulez-vous fermer l'ancienne instance pour ouvrir celle-ci ?"))
         if rep:
-            hwnd = win32gui.FindWindow(None, "DOSOFT v1.2.0")
+            hwnd = win32gui.FindWindow(None, APP_TITLE)
             if hwnd:
                 _, pid = win32process.GetWindowThreadProcessId(hwnd)
                 try:
