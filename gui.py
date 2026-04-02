@@ -36,7 +36,7 @@ class FloatingToolbar:
         title_frame = tk.Frame(self.window, bg="#c0392b", cursor="fleur")
         title_frame.pack(fill="x")
 
-        tk_lbl = tk.Label(title_frame, text="≡ Doframe ≡", bg="#c0392b", fg="white", font=("Arial", 8, "bold"))
+        tk_lbl = tk.Label(title_frame, text="≡ DOSOFT ≡", bg="#c0392b", fg="white", font=("Arial", 8, "bold"))
         tk_lbl.pack(pady=2)
         self.lbl_title = tk_lbl
 
