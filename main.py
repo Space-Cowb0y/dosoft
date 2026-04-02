@@ -195,12 +195,7 @@ class OrganizerApp:
             vk = ctypes.windll.user32.MapVirtualKeyW(scan_code, 1) 
             if vk: return vk
             
-        if len(key_str) == 1:
-            vk_scan = ctypes.windll.user32.VkKeyScanW(ord(key_str))
-            vk = vk_scan & 0xFF
-            if vk != 0xFF:
-                return vk
-            return ord(key_str.upper())
+        if len(key_str) == 1: return ord(key_str.upper())
         if key_str.startswith('f') and key_str[1:].isdigit():
             return 0x6F + int(key_str[1:])
         return None
@@ -368,10 +363,7 @@ class OrganizerApp:
         self.mouse_hotkeys = {} 
         self.mouse_states = {}  
         
-        self.register_action('f5', self.refresh)
-        self.register_action('f12', self.quit_app)
-        
-        cfg = self.config.data 
+        cfg = self.config.data
         
         # Binds avancés dynamiques
         mode = cfg.get("advanced_bind_mode", "cycle")
@@ -391,6 +383,12 @@ class OrganizerApp:
             if cfg.get("next_key"): self.register_action(cfg["next_key"], self.next_char)
             if cfg.get("leader_key"): self.register_action(cfg["leader_key"], self.focus_leader)
             if cfg.get("toggle_app_key"): self.register_action(cfg["toggle_app_key"], lambda: self.gui.root.after(0, self.gui.toggle_visibility))
+            if cfg.get("toggle_toolbar_key"): self.register_action(cfg["toggle_toolbar_key"], lambda: self.gui.root.after(0, self.gui.toggle_floating_toolbar))
+            if cfg.get("mode_all_key"): self.register_action(cfg["mode_all_key"], lambda: self.gui.root.after(0, self.gui.set_mode, "ALL"))
+            if cfg.get("mode_team1_key"): self.register_action(cfg["mode_team1_key"], lambda: self.gui.root.after(0, self.gui.set_mode, "Team 1"))
+            if cfg.get("mode_team2_key"): self.register_action(cfg["mode_team2_key"], lambda: self.gui.root.after(0, self.gui.set_mode, "Team 2"))
+            if cfg.get('refresh_key'): self.register_action(cfg['refresh_key'], self.refresh)
+            if cfg.get('quit_key'):    self.register_action(cfg['quit_key'],   self.quit_app) 
             keyboard.hook(self.global_hook_listener)
         except Exception: pass
 
@@ -402,7 +400,7 @@ class OrganizerApp:
         if self.logic.leader_hwnd: 
             self.logic.focus_window(self.logic.leader_hwnd)
             cycle_list = self.logic.get_cycle_list()
-            leader_name = self.config.data.get("leader_name", "")
+            leader_name = self.logic.get_current_leader_name()
             for index, acc in enumerate(cycle_list):
                 if acc['name'] == leader_name:
                     self.current_idx = index
